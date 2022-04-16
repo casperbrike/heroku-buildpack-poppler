@@ -3,8 +3,24 @@
 BUILD_DIR=$1
 
 PKG=poppler_22.04.0-1_amd64.deb
+APT=.apt
 
 echo "Extracting $PKG..."
-mkdir -p $BUILD_DIR/.apt
-dpkg -x "$PKG" $BUILD_DIR/.apt/
+mkdir -p $BUILD_DIR/$APT
+dpkg -x "$PKG" $BUILD_DIR/$APT
+
+echo "Writing profile script"
+
+mkdir -p $BUILD_DIR/.profile.d
+cat <<EOF >$BUILD_DIR/.profile.d/000_dpkg.sh
+export PATH="\$HOME/$APT/usr/bin:$PATH"
+export LD_LIBRARY_PATH="\$HOME/$APT/usr/lib/x86_64-linux-gnu:\$LD_LIBRARY_PATH"
+export INCLUDE_PATH="\$HOME/$APT/usr/include:\$INCLUDE_PATH"
+export CPATH="\$INCLUDE_PATH"
+export CPPPATH="\$INCLUDE_PATH"
+EOF
+
+export HOME=$BUILD_DIR
+sh $HOME/.profile.d/000_dpkg.sh
+
 echo "Done"
