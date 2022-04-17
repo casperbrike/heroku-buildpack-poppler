@@ -22,7 +22,7 @@ Then run following commands to produce the Debian package (replace `<version>` w
 
 ```bash
 docker build --build-arg version=<version> -t casperbrike/poppler:<version> .
-docker run --rm -v `pwd`:/mnt amitree/poppler:<version> cp /poppler/build/poppler_<version>-1_amd64.deb /mnt/
+docker run --rm -v `pwd`:/mnt casperbrike/poppler:<version> cp /poppler/build/poppler_<version>-1_amd64.deb /mnt/
 ```
 
 Update `bin/compile` file with name of your new package (replace `<version>` with your version):
